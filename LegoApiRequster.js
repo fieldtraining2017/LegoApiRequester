@@ -1,24 +1,33 @@
 (function(){
-    var url_rebrickable = "http://rebrickable.com/api/v3/lego/";
+    const host_rebrickable = "rebrickable.com";
+    const path_rebrickable = "/api/v3/lego";
     var fail = function(jqXHR,textStatus,errorThrown ){
         console.log("faild ajax request : " + jqXHR.statusText);
         console.log(jqXHR);
         console.log(textStatus);
         console.log(errorThrown);
     };
+
     exports.parts = function(key){
-        $.ajax({
-            url : url_rebrickable + "parts/"
-            , settings : {cathe:false}
-            , data : "page=1&search=%20"
-            , dataType : "jsonp"
-            , jsonp : "callback"
-        })
-        .done(function(data){
-            console.log("request ajax done.", data);
-        })
-        .fail(fail)
-        .always();
+        var http = require('http');
+        var options = {
+            host: host_rebrickable,
+            port: '80',
+            path: path_rebrickable + "/parts/" + "?page=1&search=%20",
+            method: 'GET',
+            headers: {
+                'Authorization': 'key McWYsSJnPY',
+            }
+        };
+
+        var req = http.request(options, function(res) {
+            // response is here
+            console.log("Res : ", res);
+        });
+
+        // write the request parameters
+        //req.write('post=data&is=specified&like=this');
+        req.end();
     };
     exports.basic = function(str){
         return "basic with " + str;
