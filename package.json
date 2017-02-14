@@ -14,7 +14,7 @@
     "mocha": "^3.2.0"
   },
   "scripts": {
-    "test": "test"
+    "test": "make test"
   },
   "repository": {
     "type": "git",

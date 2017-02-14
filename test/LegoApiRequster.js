@@ -11,6 +11,13 @@ describe('#basic', function() {
 
 describe('#parts', function() {
     it('get parts test', function(){
-        throw new Error("test");
+        parts('McWYsSJnPY').then(function(res){
+            console.log(res);
+            should.exist(res);
+            done();
+        }, function() {
+            throw new Error();
+        });
     });
 });
+console.log("mocha");
