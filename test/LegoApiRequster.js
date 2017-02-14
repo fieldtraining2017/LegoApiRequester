@@ -13,7 +13,6 @@ describe('#basic', function() {
 describe('#parts', function() {
     it('get parts test', function(){
         // http://stackoverflow.com/questions/26571328/how-do-i-properly-test-promises-with-mocha-and-chai
-        //return expect(parts('McWYsSJnPY')).to.not.be.undefined;
         return parts('McWYsSJnPY')
             .then(function(data) {
                 expect(data).to.not.be.undefined;
