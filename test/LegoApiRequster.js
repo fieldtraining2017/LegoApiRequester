@@ -1,4 +1,5 @@
 var should = require('chai').should(),
+    expect = require('chai').expect,
     LegoApiRequster = require('../LegoApiRequster'),
     parts = LegoApiRequster.parts,
     basic = LegoApiRequster.basic;
@@ -11,13 +12,12 @@ describe('#basic', function() {
 
 describe('#parts', function() {
     it('get parts test', function(){
-        parts('McWYsSJnPY').then(function(res){
-            console.log(res);
-            should.exist(res);
-            done();
-        }, function() {
-            throw new Error();
-        });
+        // http://stackoverflow.com/questions/26571328/how-do-i-properly-test-promises-with-mocha-and-chai
+        //return expect(parts('McWYsSJnPY')).to.not.be.undefined;
+        return parts('McWYsSJnPY')
+            .then(function(res) { expect(res).to.not.be.undefined; })
+            .catch(function(m) { throw new Error('was not supposed to fail'); })
+                ;
     });
 });
 console.log("mocha");

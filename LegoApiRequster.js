@@ -23,6 +23,7 @@
         return new Promise(function (resolve, reject) {
             try {
                 var req = http.request(options, function(res) {
+                    //console.log(res);
                     resolve(res);
                 });
                 // write the request parameters
