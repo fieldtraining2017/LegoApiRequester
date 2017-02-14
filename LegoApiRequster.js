@@ -1,17 +1,18 @@
+'use strict';
 (function(){
-	const http = require('http');
-	const querystring = require('querystring');
+	var http = require('http');
+	var querystring = require('querystring');
 
 	// var fail = function(jqXHR,textStatus,errorThrown ){
-	//     console.log("faild ajax request : " + jqXHR.statusText);
+	//     console.log('faild ajax request : ' + jqXHR.statusText);
 	//     console.log(jqXHR);
 	//     console.log(textStatus);
 	//     console.log(errorThrown);
 	// };
 
-	var rebrickabe_ajax_promise = function(key, path){
-		var host_rebrickable = "rebrickable.com";
-		var path_rebrickable = "/api/v3/lego";
+	var rebrickabe_ajax_promise = function(key, path, onResolve){
+		var host_rebrickable = 'rebrickable.com';
+		var path_rebrickable = '/api/v3/lego';
 		var options = {
 			host: host_rebrickable,
 			port: '80',
@@ -28,13 +29,14 @@
 					if (res.statusCode == 200){
 						// IncommingMessage에서 body 읽기
 						// http://stackoverflow.com/questions/31006711/get-request-body-from-node-jss-http-incomingmessage
-						var body = "";
+						var body = '';
 						res.on('readable', function(){
-							body += ((d = res.read()) != null ? d : "");
+              var d = res.read();
+							body += (d != null ? d : '');
 						});
 						res.on('end', function() {
 							//console.log(body);
-							resolve({res : res, data : JSON.parse(body)});
+							resolve(onResolve(res, JSON.parse(body)));
 						});
 					} else {
 						reject({res : res, errorCode : res.statusCode, errorString : getErr(res.statusCode)});
@@ -50,14 +52,40 @@
 	}
 
 	exports.parts = function(key, query){
-		var query = {
+    var assign_helpers = function(obj){
+      if (!obj)
+        return;
+      obj.page = (obj.page != undefined ? obj.page + 1 : 1);
+      obj.list = obj.data.results;
+      obj.hasNext = (obj.data.next != null);
+      obj.next = function(){
+        obj.page +=1;
+        var params = {
+          page : obj.page,
+          search : (query ? query : '')
+        };
+        var path = '/parts/?' + querystring.stringify(params);
+        return rebrickabe_ajax_promise(key, path,
+            function(res,data){
+              return assign_helpers({res : res, data : data});
+            }
+          );
+      };
+      return obj;
+    }
+    var params = {
 			page : 1,
 			search : (query ? query : '')
 		};
-		return rebrickabeAjaxPromise(key, "/parts/?" + querystring.stringify(query))
+    var path = '/parts/?' + querystring.stringify(params);
+		return rebrickabe_ajax_promise(key, path,
+        function(res,data){
+          return assign_helpers({res : res, data : data});
+        }
+      );
 	};
 
 	exports.basic = function(str){
-		return "basic with " + str;
+		return 'basic with ' + str;
 	};
 })();
