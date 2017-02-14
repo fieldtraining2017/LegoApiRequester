@@ -15,9 +15,12 @@ describe('#parts', function() {
         // http://stackoverflow.com/questions/26571328/how-do-i-properly-test-promises-with-mocha-and-chai
         //return expect(parts('McWYsSJnPY')).to.not.be.undefined;
         return parts('McWYsSJnPY')
-            .then(function(res) { expect(res).to.not.be.undefined; })
-            .catch(function(m) { throw new Error('was not supposed to fail'); })
-                ;
+            .then(function(data) {
+                expect(data).to.not.be.undefined;
+            })
+            .catch(function(m) {
+                throw new Error('was not supposed to fail');
+            });
     });
 });
 console.log("mocha");

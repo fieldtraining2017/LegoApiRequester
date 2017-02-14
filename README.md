@@ -8,6 +8,11 @@ http://rebrickable.com/api/v3/docs/
 
 # api list
 
+# test 
+'''
+    make test
+'''
+
 # 참조한 사이트
 https://quickleft.com/blog/creating-and-publishing-a-node-js-module/
 https://darrenderidder.github.io/talks/ModulePatterns/#/

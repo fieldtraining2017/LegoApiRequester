@@ -1,14 +1,16 @@
 (function(){
-    const host_rebrickable = "rebrickable.com";
-    const path_rebrickable = "/api/v3/lego";
-    var http = require('http');
+    const http = require('http');
+    const querystring = require('querystring');
 
-    var fail = function(jqXHR,textStatus,errorThrown ){
-        console.log("faild ajax request : " + jqXHR.statusText);
-        console.log(jqXHR);
-        console.log(textStatus);
-        console.log(errorThrown);
-    };
+    var host_rebrickable = "rebrickable.com";
+    var path_rebrickable = "/api/v3/lego";
+
+    // var fail = function(jqXHR,textStatus,errorThrown ){
+    //     console.log("faild ajax request : " + jqXHR.statusText);
+    //     console.log(jqXHR);
+    //     console.log(textStatus);
+    //     console.log(errorThrown);
+    // };
 
     exports.parts = function(key){
         var options = {
@@ -24,13 +26,26 @@
             try {
                 var req = http.request(options, function(res) {
                     //console.log(res);
-                    resolve(res);
+                    if (res.statusCode == 200){
+                        // IncommingMessage에서 body 읽기
+                        // http://stackoverflow.com/questions/31006711/get-request-body-from-node-jss-http-incomingmessage
+                        var body = "";
+                        res.on('readable', function(){
+                            body += ((d = res.read()) != null ? d : "");
+                        });
+                        res.on('end', function() {
+                            //console.log(body);
+                            resolve({res : res, data : JSON.parse(body)});
+                        });
+                    } else {
+                        reject(res, res.statusCode);
+                    }
                 });
                 // write the request parameters
                 //req.write('post=data&is=specified&like=this');
                 req.end();
             } catch (err){
-                reject(err);
+                reject(null, err);
             }
         });
     };
