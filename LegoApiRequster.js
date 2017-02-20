@@ -1,15 +1,7 @@
 'use strict';
 (function(){
 	var http = require('http');
-	var querystring = require('querystring');
-	
-	// var fail = function(jqXHR,textStatus,errorThrown ){
-		//     console.log('faild ajax request : ' + jqXHR.statusText);
-		//     console.log(jqXHR);
-		//     console.log(textStatus);
-		//     console.log(errorThrown);
-		// };
-		
+	var querystring = require('querystring');		
 		var rebrickabe_ajax_promise = function(key, path, onResolve){
 			var host_rebrickable = 'rebrickable.com';
 			var path_rebrickable = '/api/v3/lego';
@@ -54,7 +46,7 @@
 		exports.parts = function(key, query){
 			var assign_helpers = function(obj){
 				if (!obj)
-				return;
+				  return;
 				obj.page = (obj.page != undefined ? obj.page + 1 : 1);
 				obj.list = obj.data.results;
 				obj.hasNext = (obj.data.next != null);
@@ -66,9 +58,9 @@
 					};
 					var path = '/parts/?' + querystring.stringify(params);
 					return rebrickabe_ajax_promise(key, path,
-					function(res,data){
-						return assign_helpers({res : res, data : data});
-					}
+            function(res,data){
+              return assign_helpers({res : res, data : data});
+            }
 					);
 				};
 				return obj;
@@ -79,9 +71,9 @@
 			};
 			var path = '/parts/?' + querystring.stringify(params);
 			return rebrickabe_ajax_promise(key, path,
-			function(res,data){
-				return assign_helpers({res : res, data : data});
-			}
+        function(res,data){
+          return assign_helpers({res : res, data : data});
+        }
 			);
 		};
 		

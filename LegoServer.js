@@ -3,7 +3,13 @@ var express = require('express');
 var querystring = require('querystring');
 var app = express();
 
+app.all('/', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+ });
+
 app.get('/parts', function(req, res){
+  res.header("Access-Control-Allow-Origin", "*");
   var host_rebrickable = 'rebrickable.com';
   var path_rebrickable = '/api/v3/lego/parts/?';
   var key_rebrickable = 'McWYsSJnPY';
@@ -47,6 +53,7 @@ app.get('/parts', function(req, res){
 });
 
 app.get('/sets', function(req, res){
+  res.header("Access-Control-Allow-Origin", "*");
   var host_rebrickable = 'rebrickable.com';
   var path_rebrickable = '/api/v3/lego/sets/?';
   var key_rebrickable = 'McWYsSJnPY';
